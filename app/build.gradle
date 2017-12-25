@@ -5,13 +5,13 @@ android {
         release {
             keyAlias 'yysk'
             keyPassword '123456'
-            storeFile file('/Users/cole/yaya/jobs/android-shadowsockr/Yysk/key.jks')
+            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
             storePassword '123456'
         }
         debug {
             keyAlias 'yysk'
             keyPassword '123456'
-            storeFile file('/Users/cole/yaya/jobs/android-shadowsockr/Yysk/key.jks')
+            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
             storePassword '123456'
         }
     }

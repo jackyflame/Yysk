@@ -67,12 +67,12 @@ public class MainFragmentDZ extends Fragment {
         Fragment currentFragment = null;
         if (id == R.id.navigation_home) {
             if (homeFragment == null) {
-                homeFragment = HomeFragment.newInstance();
+                homeFragment = HomeFragmentDZ.newInstance();
             }
             currentFragment = homeFragment;
         } else if (id == R.id.navigation_my) {
             if (myFragment == null) {
-                myFragment = MyFragment.newInstance();
+                myFragment = MyFragmentDZ.newInstance();
             }
 
             currentFragment = myFragment;

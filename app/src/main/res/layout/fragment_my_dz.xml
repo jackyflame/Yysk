@@ -17,24 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#f3f3f3"
-        >
+        android:background="#f3f3f3">
 
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:orientation="vertical"
-           >
+           android:orientation="vertical">
 
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-
                android:orientation="vertical"
                android:paddingLeft="20dp"
                android:background="#ffffff"
-               android:layout_marginTop="20dp"
-               >
+               android:layout_marginTop="20dp">
 
                <LinearLayout
                    android:id="@+id/loginLayout"
@@ -84,42 +80,17 @@
 
                </LinearLayout>
 
-               <LinearLayout
-                   android:id="@+id/userIdLayout"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="vertical"
-                   >
-                   <TextView
-                       android:id="@+id/userIdView"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:paddingTop="10dp"
-                       android:paddingBottom="10dp"
-                       android:text=""
-                       android:gravity="center_vertical"
-                       android:drawablePadding="10dp"
-                       android:drawableLeft="@drawable/id"
-                       android:drawableRight="@drawable/arrow_right"
-                       />
-                   <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#f3f3f3"></View>
-
-               </LinearLayout>
-
-
-
                <TextView
                    android:id="@+id/siteView"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:paddingTop="10dp"
                    android:paddingBottom="10dp"
-                   android:text="官方网站"
+                   android:text="管理员"
                    android:gravity="center_vertical"
                    android:drawablePadding="10dp"
                    android:drawableLeft="@drawable/officialwebsite"
-                   android:drawableRight="@drawable/arrow_right"
-                   />
+                   android:drawableRight="@drawable/arrow_right"/>
 
            </LinearLayout>
 
@@ -127,12 +98,10 @@
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-
                android:orientation="vertical"
                android:paddingLeft="20dp"
                android:background="#ffffff"
-               android:layout_marginTop="20dp"
-               >
+               android:layout_marginTop="20dp" >
 
                <TextView
                    android:id="@+id/feedbackView"
@@ -144,42 +113,9 @@
                    android:gravity="center_vertical"
                    android:drawablePadding="10dp"
                    android:drawableLeft="@drawable/feedback"
-                   android:drawableRight="@drawable/arrow_right"
-                   />
-               <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#f3f3f3"></View>
-
-
-               <TextView
-                   android:id="@+id/notifyView"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:paddingTop="10dp"
-                   android:paddingBottom="10dp"
-                   android:text="系统消息"
-                   android:gravity="center_vertical"
-                   android:drawablePadding="10dp"
-                   android:drawableLeft="@drawable/system_message"
-                   android:drawableRight="@drawable/arrow_right"
-                   />
-               <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#f3f3f3"></View>
-
-
-
-               <TextView
-                   android:id="@+id/hostView"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:paddingTop="10dp"
-                   android:paddingBottom="10dp"
-                   android:text="域名设置"
-                   android:gravity="center_vertical"
-                   android:drawablePadding="10dp"
-                   android:drawableLeft="@drawable/settings"
-                   android:drawableRight="@drawable/arrow_right"
-                   />
+                   android:drawableRight="@drawable/arrow_right"/>
 
                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#f3f3f3"></View>
-
 
                <RelativeLayout
                    android:id="@+id/versionLayout"
@@ -215,13 +151,7 @@
                        />
                </RelativeLayout>
 
-
-
-
-
-
            </LinearLayout>
-
 
            <Button
                android:id="@+id/logoutView"
@@ -234,8 +164,8 @@
                android:text="退出登录"
                />
 
-
        </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
 

@@ -26,18 +26,11 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
     //
     private View loginLayout;
     private View phoneNumberLayout;
-    private View userIdLayout;
-
-    private TextView userIdView;
     private TextView phoneNumberView;
     private TextView loginView;
     private TextView siteView;
-    //private TextView qqView;
     //
     private TextView feedbackView;
-    //private TextView contactView;
-    private TextView notifyView;
-    private TextView hostView;
     private TextView versionView;
     private View versionLayout;
 
@@ -65,17 +58,13 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_my_dz, container, false);
         loginLayout = view.findViewById(R.id.loginLayout);
         phoneNumberLayout = view.findViewById(R.id.phoneNumberLayout);
-        userIdLayout = view.findViewById(R.id.userIdLayout);
 
         loginView = view.findViewById(R.id.loginView);
         phoneNumberView = view.findViewById(R.id.phoneNumberView);
-        userIdView = view.findViewById(R.id.userIdView);
         siteView = view.findViewById(R.id.siteView);
         //
         feedbackView = view.findViewById(R.id.feedbackView);
         //contactView = view.findViewById(R.id.contactView);
-        notifyView = view.findViewById(R.id.notifyView);
-        hostView = view.findViewById(R.id.hostView);
         versionView = view.findViewById(R.id.versionView);
         versionLayout = view.findViewById(R.id.versionLayout);
 
@@ -85,23 +74,14 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         //
         loginView.setOnClickListener(this);
         phoneNumberView.setOnClickListener(this);
-        userIdView.setOnClickListener(this);
         siteView.setOnClickListener(this);
         //
         feedbackView.setOnClickListener(this);
-        //contactView.setOnClickListener(this);
-        notifyView.setOnClickListener(this);
-        hostView.setOnClickListener(this);
-        //versionView.setOnClickListener(this);
         versionLayout.setOnClickListener(this);
         //
         logoutView.setOnClickListener(this);
 
-
         versionView.setText(getVersion());
-
-        //qqView.setOnClickListener(this);
-
 
         return view;
     }
@@ -111,18 +91,11 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         adjustIconSize(loginView);
         adjustIconSize(phoneNumberView);
-        adjustIconSize(userIdView);
         adjustIconSize(siteView);
         //
         adjustIconSize(feedbackView);
         //adjustIconSize(contactView);
-        adjustIconSize(hostView);
-        adjustIconSize(notifyView);
         adjustIconSize((TextView) view.findViewById(R.id.versionLabelView));
-
-        //adjustIconSize(qqView);
-
-
     }
 
     private void adjustIconSize(TextView view) {
@@ -232,18 +205,12 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         Session session = app.getSessionManager().getSession();
         if (!session.isLogin()) {
             loginLayout.setVisibility(View.VISIBLE);
-            userIdLayout.setVisibility(View.GONE);
             phoneNumberLayout.setVisibility(View.GONE);
-
             logoutView.setEnabled(false);
         } else {
             loginLayout.setVisibility(View.GONE);
-            userIdLayout.setVisibility(View.VISIBLE);
             phoneNumberLayout.setVisibility(View.VISIBLE);
-
-            userIdView.setText(session.user.id);
             phoneNumberView.setText(session.user.phoneNumber);
-
             logoutView.setEnabled(true);
         }
     }
@@ -279,8 +246,6 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
      */
     private void openWebSite() {
         //siteView.setEnabled(false);
-
-
         Session session = app.getSessionManager().getSession();
         if (session.isLogin()) {
             //如果没有登录?
@@ -305,7 +270,6 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         //不需要调用api
         app.getSessionManager().onLogout();
     }
-
 
     public static MyFragmentDZ newInstance() {
         MyFragmentDZ fragment = new MyFragmentDZ();

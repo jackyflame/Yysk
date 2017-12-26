@@ -8,12 +8,12 @@ android {
             storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
             storePassword '123456'
         }
-        debug {
-            keyAlias 'yysk'
-            keyPassword '123456'
-            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
-            storePassword '123456'
-        }
+//        debug {
+//            keyAlias 'yysk'
+//            keyPassword '123456'
+//            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
+//            storePassword '123456'
+//        }
     }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'

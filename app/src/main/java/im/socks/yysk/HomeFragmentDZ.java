@@ -38,6 +38,7 @@ public class HomeFragmentDZ extends Fragment {
     private TextView proxyNameView;
     private Switch bypassChinaView;
     private View editAclView;
+    private View testSpeedView;
 
 
     //me part
@@ -162,6 +163,14 @@ public class HomeFragmentDZ extends Fragment {
         });
         //
         updateProxy(app.getSessionManager().getProxy());
+
+        testSpeedView = proxyLayout.findViewById(R.id.testSpeedView);
+        testSpeedView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                app.openUrl("https://fast.com");
+            }
+        });
     }
 
     @Override

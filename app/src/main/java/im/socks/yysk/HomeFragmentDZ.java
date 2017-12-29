@@ -1,5 +1,6 @@
 package im.socks.yysk;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -278,6 +279,8 @@ public class HomeFragmentDZ extends Fragment {
             vpnButton.setEnabled(true);
             vpnButton.setBackgroundResource(R.drawable.vpn_button_on);
         } else {
+            //
+            showVPNAlert("VPN已断开链接");
             //不可能的
             vpnButton.setText("未知:" + status);
             vpnButton.setEnabled(true);
@@ -314,6 +317,13 @@ public class HomeFragmentDZ extends Fragment {
         }
     }
 
+    private void showVPNAlert(String msg){
+        new AlertDialog.Builder(getContext())
+                .setTitle("提醒")
+                .setMessage(msg)
+                .setPositiveButton("确定",null)
+                .show();
+    }
     //========================================
 
 

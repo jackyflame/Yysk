@@ -102,31 +102,6 @@ public class YyskDZApi extends YyskApi {
 
     }
 
-    protected XBean invokeApiDZ(String url, String msgId, XBean params) {
-        // 补充消息头
-        XBean msg = new XBean();
-        msg.put("msgid", msgId);
-        msg.put("msgbody", params);
-
-        String strJson = Json.stringify(msg);
-
-        String strMsg = encode(strJson);
-        // http://host:port/Msg=xxxxxxxx
-        String body = http.doGet(url + strMsg);
-
-
-        if (body != null) {
-            String s = decode(body);
-            MyLog.d("invokeApiDZ,url=%s,request=%s,response=%s", url, strJson, s);
-            return Json.parse(s, XBean.class);
-        } else {
-            //有错误
-            MyLog.d("invokeApiDZ,url=%s,request=%s,response=%s", url, strJson, null);
-            return null;
-        }
-
-    }
-
     /*--------------------------------------------------------------------------------------------*/
     public void loginDZ(String strPhoneNum, String strPassword, final ICallback<XBean> cb) {
         //如果仅仅执行登录，感觉没有做任何事情，什么都不返回，token也没有
@@ -159,5 +134,12 @@ public class YyskDZApi extends YyskApi {
                 }
             }
         });
+    }
+
+    public void bindDevice(String account, final ICallback<XBean> cb) {
+        //如果仅仅执行登录，感觉没有做任何事情，什么都不返回，token也没有
+        final XBean params = new XBean("account", account);
+        //先登录，不登录也不影响，实际上应该返回用户的基本信息，如：user_id+token(控制api的访问)
+        invokeDZ("10040", "20040", params, cb);
     }
 }

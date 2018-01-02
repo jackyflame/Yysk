@@ -1,6 +1,8 @@
 package im.socks.yysk;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import im.socks.yysk.api.YyskApi;
 import im.socks.yysk.api.YyskDZApi;
+import im.socks.yysk.util.StringUtils;
 import im.socks.yysk.util.XBean;
 
 /**
@@ -107,18 +110,23 @@ public class LoginFragmentDZ extends Fragment {
                 if (result != null) {
                     //登录成功后什么都不返回，正常的实现应该返回一个token，然后其他操作都通过这个token来调用api
                     //
-                    if (result.isEquals("retcode", "succ")) {
+                    if (result.isEquals("retcode", "succ") ||
+                            result.isEquals("retcode", "binded")) {
                         //
                         app.getSessionManager().onLogin(result.getString("uuid"), phoneNumber,
                                 result.getString("terminal_num"),result.getString("binded_terminal_num"),result.getString("entername"));
-
-                        //当前的fragment不需要保留在stack了，所以为替代
-                        if ("show_money".equals(nextAction)) {
-                            getFragmentStack().show(MoneyFragment.newInstance(), null, true);
-                        } else {
-                            getFragmentStack().back();
+                        //判断是否绑定(未绑定提示是否绑定)
+                        if(result.isEquals("retcode", "succ")){
+                            showBindDialog(phoneNumber,result.getString("terminal_num"),
+                                    result.getString("binded_terminal_num"));
+                        }else{
+                            //当前的fragment不需要保留在stack了，所以为替代
+                            if ("show_money".equals(nextAction)) {
+                                getFragmentStack().show(MoneyFragment.newInstance(), null, true);
+                            } else {
+                                getFragmentStack().back();
+                            }
                         }
-
                     } else {
                         //登录失败，显示错误信息
                         showError("登录失败：" + result.getString("error"));
@@ -141,11 +149,81 @@ public class LoginFragmentDZ extends Fragment {
      * @param nextAction 表示登录成功后，执行什么操作，如果为null，表示不执行，现在仅仅支持null，show_money
      * @return
      */
-    public static LoginFragment newInstance(String nextAction) {
-        LoginFragment fragment = new LoginFragment();
+    public static LoginFragmentDZ newInstance(String nextAction) {
+        LoginFragmentDZ fragment = new LoginFragmentDZ();
         Bundle args = new Bundle();
         args.putString("next_action", nextAction);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void showBindDialog(final String account, String terminal_num, String binded_terminal_num){
+        if(StringUtils.isInteger(terminal_num) || StringUtils.isInteger(binded_terminal_num)){
+            new AlertDialog.Builder(getContext())
+                    .setTitle("提醒")
+                    .setMessage("获取绑定设备数据失败，请稍后再试")
+                    .setPositiveButton("确定",null)
+                    .show();
+        }else{
+            int terminalNum = Integer.valueOf(terminal_num);
+            int bindedNum = Integer.valueOf(binded_terminal_num);
+            if(terminalNum <= bindedNum){
+                new AlertDialog.Builder(getContext())
+                        .setTitle("提醒")
+                        .setMessage("企业绑定设备数已用完，请通知管理员进行处理！")
+                        .setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                getFragmentStack().back();
+                            }
+                        })
+                        .show();
+            }else{
+                new AlertDialog.Builder(getContext())
+                        .setTitle("提醒")
+                        .setMessage("是否绑定新的终端设备？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                doBindDevice(account);
+                            }
+                        })
+                        .setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                getFragmentStack().back();
+                            }
+                        })
+                        .show();
+            }
+        }
+    }
+
+    private void doBindDevice(String account){
+
+        YyskDZApi api = app.getApi();
+
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setCancelable(false);
+        dialog.setMessage("正在绑定...");
+        dialog.show();
+
+        api.bindDevice(account, new YyskApi.ICallback<XBean>() {
+            @Override
+            public void onResult(XBean result) {
+                MyLog.d("bindDevice=%s",result);
+                dialog.dismiss();
+                if (result != null) {
+                    if (result.isEquals("retcode", "succ")) {
+                        Toast.makeText(getContext(),"绑定成功",Toast.LENGTH_SHORT).show();
+                        getFragmentStack().back();
+                    }else{
+                        showError("绑定失败：" + result.getString("error"));
+                    }
+                } else {
+                    showError("绑定失败，请检查你的本地网络是否通畅，或是服务器故障需要恢复后重新尝试");
+                }
+            }
+        });
     }
 }

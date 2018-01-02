@@ -488,7 +488,8 @@ public class YyskApi {
         if (body != null) {
             String s = decode(body);
             MyLog.d("invokeApi,url=%s,request=%s,response=%s", url, strJson, s);
-            return Json.parse(s, XBean.class);
+            XBean rst = Json.parse(s, XBean.class);
+            return rst;
         } else {
             //有错误
             MyLog.d("invokeApi,url=%s,request=%s,response=%s", url, strJson, null);

@@ -35,7 +35,6 @@ public class Yysk {
     public final static int STATUS_STOPPED = 4; //停止
 
 
-    public static final App app = new App();
-
+    public static final AppDZ app = new AppDZ();
 
 }

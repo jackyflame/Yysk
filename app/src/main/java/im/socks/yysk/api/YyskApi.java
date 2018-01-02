@@ -24,34 +24,33 @@ import im.socks.yysk.Yysk;
 import im.socks.yysk.util.IOUtil;
 import im.socks.yysk.util.Json;
 import im.socks.yysk.util.XBean;
-import okhttp3.OkHttpClient;
 
 public class YyskApi {
 
-    private String deviceId;
+    protected String deviceId;
     /**
      * 默认的api url
      */
-    private String defaultApiUrl = null;
+    protected String defaultApiUrl = null;
 
     /**
      * 当前有效的url
      */
-    private AtomicReference<String> apiUrl = new AtomicReference<>(null);
+    protected AtomicReference<String> apiUrl = new AtomicReference<>(null);
     /**
      * 用户设置的api url
      */
-    private AtomicReference<String> customApiUrl = new AtomicReference<>(null);
+    protected AtomicReference<String> customApiUrl = new AtomicReference<>(null);
 
-    private ExecutorService executor;
-    private Handler handler = null;
-    private Context context = null;
+    protected ExecutorService executor;
+    protected Handler handler = null;
+    protected Context context = null;
 
-    private Http http = null;
+    protected Http http = null;
 
-    private App app;
+    protected App app;
 
-    private EventBus.IListener eventListener = new EventBus.IListener() {
+    protected EventBus.IListener eventListener = new EventBus.IListener() {
         @Override
         public void onEvent(String name, Object data) throws Exception {
             if (Yysk.EVENT_SETTINGS.equals(name)) {
@@ -67,6 +66,10 @@ public class YyskApi {
     };
 
     public YyskApi(App app) {
+        initApi(app);
+    }
+
+    protected void initApi(App app){
         this.app = app;
         this.context = app.getContext();
         this.handler = new Handler(Looper.getMainLooper());
@@ -83,10 +86,10 @@ public class YyskApi {
         updateCustomApiUrl(app.getSettings().getData().getXBean("api_server"));
 
         app.getEventBus().on(Yysk.EVENT_SETTINGS, eventListener);
-
     }
 
-    private void updateCustomApiUrl(XBean value) {
+
+    protected void updateCustomApiUrl(XBean value) {
         if (value == null) {
             setCustomApiUrl(null);
         } else {
@@ -109,7 +112,7 @@ public class YyskApi {
     }
 
 
-    private String buildDeviceId() {
+    protected String buildDeviceId() {
         //参考：http://www.jianshu.com/p/b6f4b0aca6b0
         //TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         //String tmDevice;
@@ -404,7 +407,7 @@ public class YyskApi {
 
     }
 
-    private <T> void invoke(final String msgId, final String ackMsgId, final XBean params, final ICallback<T> cb) {
+    protected <T> void invoke(final String msgId, final String ackMsgId, final XBean params, final ICallback<T> cb) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -421,7 +424,7 @@ public class YyskApi {
         });
     }
 
-    private <T> T invoke(String msgId, String acKMsgId, XBean params) {
+    protected <T> T invoke(String msgId, String acKMsgId, XBean params) {
         params.put("DeviceId", deviceId);
         //先使用上一次成功的url
         String oldUrl = apiUrl.get();
@@ -469,7 +472,7 @@ public class YyskApi {
 
     }
 
-    private XBean invokeApi(String url, String msgId, XBean params) {
+    protected XBean invokeApi(String url, String msgId, XBean params) {
         // 补充消息头
         XBean msg = new XBean();
         msg.put("msgid", msgId);
@@ -516,7 +519,7 @@ public class YyskApi {
      *
      * @return
      */
-    private String getApiUrlFromBlog() {
+    protected String getApiUrlFromBlog() {
         //http://yuyansuoke.lofter.com/post/1f159cbf_112fea9c
         //String url = decode("aHR0cDovL3l1eWFuc3Vva2UubG9mdGVyLmNvbS9wb3N0LzFmMTU5Y2JmXzExMmZlYTlj");
         String url = "http://yuyansuoke.lofter.com/post/1f159cbf_112fea9c";
@@ -536,8 +539,7 @@ public class YyskApi {
 
     }
 
-
-    private String encode(String s) {
+    protected String encode(String s) {
         try {
             return Base64.encodeToString(s.getBytes("utf-8"), Base64.NO_WRAP);
         } catch (UnsupportedEncodingException e) {
@@ -545,7 +547,7 @@ public class YyskApi {
         }
     }
 
-    private String decode(String s) {
+    protected String decode(String s) {
         try {
             byte[] bytes = Base64.decode(s.getBytes("US-ASCII"), Base64.NO_WRAP);
             return new String(bytes, "utf-8");

@@ -50,7 +50,7 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
     };
 
 
-    private final App app = Yysk.app;
+    private final AppDZ app = Yysk.app;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,7 +129,7 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
         int id = v.getId();
         if (id == R.id.loginView) {
             //or show_money
-            getFragmentStack().show(LoginFragment.newInstance(null), "login", false);
+            getFragmentStack().show(LoginFragmentDZ.newInstance(null), "login", false);
         } else if (id == R.id.phoneNumberView) {
             getFragmentStack().show(MoneyFragment.newInstance(), null, false);
         } else if (id == R.id.userIdView) {
@@ -238,7 +238,7 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
     }
 
     private void checkUpdate(){
-        app.checkUpdate(getActivity(),false);
+        app.checkUpdateDZ(getActivity(),false);
     }
 
     /**

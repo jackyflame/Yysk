@@ -128,7 +128,7 @@ public class HomeFragmentDZ extends Fragment {
         loginLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentStack().show(LoginFragment.newInstance(null), "login", false);
+                getFragmentStack().show(LoginFragmentDZ.newInstance(null), "login", false);
             }
         });
     }

@@ -81,10 +81,23 @@ public class SessionManager {
      * @param phoneNumber
      */
     public void onLogin(String id, String phoneNumber) {
+        onLogin(id,phoneNumber,null,null,null);
+    }
+
+    public void onLogin(String id, String phoneNumber,String terminalNum,String bindedTerminalNum,String entername) {
 
         session = new Session();
         session.user.phoneNumber = phoneNumber;
         session.user.id = id;
+        if(terminalNum != null){
+            session.user.terminalNum = terminalNum;
+        }
+        if(bindedTerminalNum != null){
+            session.user.bindedTerminalNum = bindedTerminalNum;
+        }
+        if(entername != null){
+            session.user.entername = entername;
+        }
         //session.user.password = password;//
         //session.setToken("");//正常登录后应该获得一个token的
         session.setLogin(true);

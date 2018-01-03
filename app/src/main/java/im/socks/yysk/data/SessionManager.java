@@ -81,10 +81,10 @@ public class SessionManager {
      * @param phoneNumber
      */
     public void onLogin(String id, String phoneNumber) {
-        onLogin(id,phoneNumber,null,null,null);
+        onLogin(id,phoneNumber,null,null,null,null);
     }
 
-    public void onLogin(String id, String phoneNumber,String terminalNum,String bindedTerminalNum,String entername) {
+    public void onLogin(String id, String phoneNumber,String terminalNum,String bindedTerminalNum,String entername,String psw) {
 
         session = new Session();
         session.user.phoneNumber = phoneNumber;
@@ -97,6 +97,9 @@ public class SessionManager {
         }
         if(entername != null){
             session.user.entername = entername;
+        }
+        if(psw != null){
+            session.user.psw = psw;
         }
         //session.user.password = password;//
         //session.setToken("");//正常登录后应该获得一个token的
@@ -121,6 +124,18 @@ public class SessionManager {
            setProxy(null,null,true);
         }
 
+    }
+
+    public void onVpnVerCheck(int vpnVersion,int companyId){
+        if(session == null){
+            return;
+        }
+        session.vpnVersion = vpnVersion;
+        session.companyid = companyId;
+
+        saveSession(session);
+
+        app.getEventBus().emit(Yysk.EVENT_VPNCHECK, session, false);
     }
 
     private void onProxyChanged(Activity activity, Proxy proxy, boolean isReload) {

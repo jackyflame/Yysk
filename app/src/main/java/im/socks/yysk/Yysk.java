@@ -13,6 +13,7 @@ public class Yysk {
     public static final String EVENT_LOGIN = "login";
     public static final String EVENT_LOGOUT = "logout";
     public static final String EVENT_SETTINGS = "settings";
+    public static final String EVENT_VPNCHECK = "vpn_check";
 
     public static final String EVENT_CUSTOM_PROXY_ADD="custom_proxy_add";
     public static final String EVENT_CUSTOM_PROXY_REMOVE="custom_proxy_remove";

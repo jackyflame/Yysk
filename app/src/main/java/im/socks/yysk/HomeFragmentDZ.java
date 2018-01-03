@@ -24,8 +24,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import im.socks.yysk.api.YyskApi;
 import im.socks.yysk.data.Proxy;
 import im.socks.yysk.data.Session;
+import im.socks.yysk.util.XBean;
 import im.socks.yysk.vpn.IYyskService;
 import im.socks.yysk.vpn.IYyskServiceListener;
 
@@ -49,7 +51,7 @@ public class HomeFragmentDZ extends Fragment {
 
     //private long startTime;
 
-    private final App app = Yysk.app;
+    private final AppDZ app = Yysk.app;
 
     /**
      * true表示需要登录才可以连接，获得代理列表
@@ -90,6 +92,8 @@ public class HomeFragmentDZ extends Fragment {
         updateMe(false);
 
         initRefreshLayout(view);
+
+        checkVpnUpdate();
 
         return view;
     }
@@ -218,11 +222,9 @@ public class HomeFragmentDZ extends Fragment {
 
     }
 
-
     private FragmentStack getFragmentStack() {
         return ((MainActivity) getActivity()).getFragmentStack();
     }
-
 
     private void updateProxy(Proxy proxy) {
         if (proxy != null) {
@@ -285,6 +287,25 @@ public class HomeFragmentDZ extends Fragment {
             vpnButton.setText("未知:" + status);
             vpnButton.setEnabled(true);
             vpnButton.setBackgroundResource(R.drawable.vpn_button_off);
+        }
+    }
+
+    private void checkVpnUpdate(){
+        Session session = app.getSessionManager().getSession();
+        if (session.isLogin()) {
+            app.apiDZ.checkVpnUpdateVerson(session.user.phoneNumber, session.user.psw, new YyskApi.ICallback<XBean>() {
+                @Override
+                public void onResult(XBean result) {
+                    if(result != null && result.isEquals("retcode", "succ")){
+                        int vpnVersion = result.getInteger("versionid") != null
+                                ? result.getInteger("versionid") : -1;
+                        int companyid = result.getInteger("companyid") != null
+                                ? result.getInteger("companyid") : -1;
+                        ////更新版本
+                        //app.getSessionManager().onVpnVerCheck(vpnVersion,companyid);
+                    }
+                }
+            });
         }
     }
 

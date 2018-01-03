@@ -72,4 +72,8 @@ public class YyskDZApi extends YyskApi {
     public void getAppVersionDZ(String version,ICallback<XBean> cb){
         invoke("10043","20043",new XBean("Os","android","VersionId",version),cb);
     }
+
+    public void checkVpnUpdateVerson(String account,String psw,ICallback<XBean> cb) {
+        invoke("10039","20039",new XBean("account",account,"password",psw),cb);
+    }
 }

@@ -114,7 +114,8 @@ public class LoginFragmentDZ extends Fragment {
                             result.isEquals("retcode", "binded")) {
                         //
                         app.getSessionManager().onLogin(result.getString("uuid"), phoneNumber,
-                                result.getString("terminal_num"),result.getString("binded_terminal_num"),result.getString("entername"));
+                                result.getString("terminal_num"),result.getString("binded_terminal_num"),
+                                result.getString("entername"),password);
                         //判断是否绑定(未绑定提示是否绑定)
                         if(result.isEquals("retcode", "succ")){
                             showBindDialog(phoneNumber,result.getString("terminal_num"),

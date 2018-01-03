@@ -15,6 +15,12 @@ public class Session implements Json.IJsonable<XBean> {
     private boolean isLogin = false;
     //正常的实现应该是存储一个token，然后到后台检查的，但是现在后台没有返回一个token
 
+
+    /**vpn列表版本*/
+    public int vpnVersion;
+    /**vpn列表所属公司ID*/
+    public int companyid;
+
     public Session() {
     }
 
@@ -29,7 +35,8 @@ public class Session implements Json.IJsonable<XBean> {
     @Override
     public XBean toJson() {
         //应该存储token，而不是is_login的
-        return new XBean("user", user.toJson(), "is_login", isLogin);
+        return new XBean("user", user.toJson(), "is_login", isLogin,
+                "vpnVersion", vpnVersion, "companyid", companyid);
     }
 
     @Override
@@ -41,6 +48,8 @@ public class Session implements Json.IJsonable<XBean> {
         }
         //实际上应该获得的是token
         isLogin = bean.getBoolean("is_login", false);
+        vpnVersion = bean.getInteger("vpnVersion", -1);
+        companyid = bean.getInteger("companyid", -1);
 
         return true;
     }

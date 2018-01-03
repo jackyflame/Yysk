@@ -144,7 +144,7 @@ public class HomeFragmentDZ extends Fragment {
         proxyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentStack().show(ProxyFragment.newInstance(),null,false);
+                getFragmentStack().show(ProxyFragmentDZ.newInstance(),null,false);
             }
         });
 

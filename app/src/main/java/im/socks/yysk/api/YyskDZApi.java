@@ -1,6 +1,8 @@
 package im.socks.yysk.api;
 
 
+import java.util.List;
+
 import im.socks.yysk.App;
 import im.socks.yysk.AppDZ;
 import im.socks.yysk.util.XBean;
@@ -75,5 +77,13 @@ public class YyskDZApi extends YyskApi {
 
     public void checkVpnUpdateVerson(String account,String psw,ICallback<XBean> cb) {
         invoke("10039","20039",new XBean("account",account,"password",psw),cb);
+    }
+
+    /* 获取企业用户专用节点
+    * strPhoneNum: 登录手机号
+    * 返回值: 成功返回[{"authscheme":"","host":"","name":"","password":"","port":"","price":,"ssrObfs":"n","ssrProtocol":"","user":""}],失败返回null
+    * */
+    public void getDZProxyList(String strPhoneNum, ICallback<List<XBean>> cb) {
+        invoke("10042", "20042", new XBean("PhoneNumber", strPhoneNum), cb);
     }
 }

@@ -68,4 +68,8 @@ public class YyskDZApi extends YyskApi {
         //先登录，不登录也不影响，实际上应该返回用户的基本信息，如：user_id+token(控制api的访问)
         invoke("10040", "20040", params, cb);
     }
+
+    public void getAppVersionDZ(String version,ICallback<XBean> cb){
+        invoke("10043","20043",new XBean("Os","android","VersionId",version),cb);
+    }
 }

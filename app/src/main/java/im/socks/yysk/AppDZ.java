@@ -57,10 +57,9 @@ public class AppDZ extends App {
         HttpManager httpManager = new HttpManager() {
             @Override
             public void asyncGet(@NonNull String url, @NonNull Map<String, String> params, @NonNull final Callback cb) {
-                apiDZ.getAppVersion(params.get("version"), new YyskApi.ICallback<XBean>() {
+                apiDZ.getAppVersionDZ(params.get("version"), new YyskApi.ICallback<XBean>() {
                     @Override
                     public void onResult(XBean result) {
-
                         if(result!=null){
                             //
                             cb.onResponse(Json.stringify(result));
@@ -72,9 +71,7 @@ public class AppDZ extends App {
             }
 
             @Override
-            public void asyncPost(@NonNull String url, @NonNull Map<String, String> params, @NonNull Callback callBack) {
-
-            }
+            public void asyncPost(@NonNull String url, @NonNull Map<String, String> params, @NonNull Callback callBack) {}
 
             @Override
             public void download(@NonNull String url, @NonNull String path, @NonNull String fileName, @NonNull final FileCallback callback) {

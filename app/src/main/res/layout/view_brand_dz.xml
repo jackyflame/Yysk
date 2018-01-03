@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="center"
-        android:text="定制版登录加速"
+        android:text="极连企业版"
         android:textColor="#FFE65A1F"
         android:textSize="24sp"
         android:textStyle="bold" />

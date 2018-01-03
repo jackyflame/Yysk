@@ -32,7 +32,7 @@ public class YyskDZApi extends YyskApi {
     public void loginDZ(String strPhoneNum, String strPassword, final ICallback<XBean> cb) {
         //如果仅仅执行登录，感觉没有做任何事情，什么都不返回，token也没有
         //invoke("10020", "20020", new XBean("PhoneNumber", strPhoneNum, "Password", strPassword),cb);
-        final XBean loginParams = new XBean("PhoneNumber", strPhoneNum, "Password", strPassword);
+        final XBean loginParams = new XBean("account", strPhoneNum, "Password", strPassword);
         final XBean profileParams = new XBean("PhoneNumber", strPhoneNum);
         executor.execute(new Runnable() {
             @Override

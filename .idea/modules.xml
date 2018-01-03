@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Yysk.iml" filepath="$PROJECT_DIR$/Yysk.iml" />
       <module fileurl="file://D:\Deverloper\Yysk\.idea\Yysk.iml" filepath="D:\Deverloper\Yysk\.idea\Yysk.iml" />
-      <module fileurl="file://D:\UserData\AndroidStudioProjects\Yysk\Yysk.iml" filepath="D:\UserData\AndroidStudioProjects\Yysk\Yysk.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

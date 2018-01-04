@@ -83,6 +83,6 @@ public class YyskDZApi extends YyskApi {
     * 返回值: 成功返回[{"authscheme":"","host":"","name":"","password":"","port":"","price":,"ssrObfs":"n","ssrProtocol":"","user":""}],失败返回null
     * */
     public void getDZProxyList(String strPhoneNum, ICallback<List<XBean>> cb) {
-        invoke("10042", "20042", new XBean("PhoneNumber", strPhoneNum), cb);
+        invoke("10042", "20042", new XBean("account", strPhoneNum), cb);
     }
 }

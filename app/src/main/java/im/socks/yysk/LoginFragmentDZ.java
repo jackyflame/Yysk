@@ -177,7 +177,7 @@ public class LoginFragmentDZ extends Fragment {
             if(terminalNum <= bindedNum){
                 new AlertDialog.Builder(getContext())
                         .setTitle("提醒")
-                        .setMessage("企业绑定设备数已用完，请通知管理员进行处理！")
+                        .setMessage("请联系您团队的管理员授权设备数，否则无法获得使用权限！")
                         .setPositiveButton("确定",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -188,7 +188,7 @@ public class LoginFragmentDZ extends Fragment {
             }else{
                 new AlertDialog.Builder(getContext())
                         .setTitle("提醒")
-                        .setMessage("是否绑定新的终端设备？")
+                        .setMessage("是否绑定该设备使用，将消耗一个设备数，您总共拥有terminal_num个设备数？")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

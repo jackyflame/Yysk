@@ -10,7 +10,7 @@
     <im.socks.yysk.PageBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:pb_title="雨燕梭客"></im.socks.yysk.PageBar>
+        app:pb_title="@string/app_name"></im.socks.yysk.PageBar>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

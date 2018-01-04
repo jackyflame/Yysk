@@ -27,7 +27,7 @@ public class ProxyFragmentDZ extends Fragment {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
 
-        adapter.addFragment(ProxyListFragmentDZ.newInstance(false),"企业VPN");
+        adapter.addFragment(ProxyListFragmentDZ.newInstance(false),"企业idc线路");
         adapter.addFragment(CustomProxyListFragment.newInstance(), "自定义");
 
         viewPager.setAdapter(adapter);

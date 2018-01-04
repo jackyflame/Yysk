@@ -277,12 +277,13 @@ public class HomeFragmentDZ extends Fragment {
             vpnButton.setEnabled(false);
             vpnButton.setBackgroundResource(R.drawable.vpn_button_on);
         } else if (status == Yysk.STATUS_CONNECTED) {
+            showVPNAlert("VPN 开启");
             vpnButton.setText("停止");
             vpnButton.setEnabled(true);
             vpnButton.setBackgroundResource(R.drawable.vpn_button_on);
         } else {
             //
-            showVPNAlert("VPN已断开链接");
+            showVPNAlert("VPN 已断开");
             //不可能的
             vpnButton.setText("未知:" + status);
             vpnButton.setEnabled(true);
@@ -333,6 +334,7 @@ public class HomeFragmentDZ extends Fragment {
             //
         } else if (status == Yysk.STATUS_CONNECTED) {
             app.getVpn().stop();
+            showVPNAlert("VPN 已关闭");
         } else {
             //
         }

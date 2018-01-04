@@ -10,14 +10,15 @@ import im.socks.yysk.util.XBean;
 public class Proxy implements Json.IJsonable<XBean> {
     public String id;
     public String name;
-    /**
-     * true表示为自己添加的，false表示雨燕梭客提供的
-     */
+
+    /**true表示为自己添加的，false表示系统提供的*/
     public boolean isCustom=false;
+
     /**
      * 如果不是自定义的，表示为那个用户的代理
      */
     //public String phoneNumber;
+    
     /**
      * 获得原始的
      */

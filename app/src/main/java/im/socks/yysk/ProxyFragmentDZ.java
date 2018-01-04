@@ -28,7 +28,7 @@ public class ProxyFragmentDZ extends Fragment {
 
 
         adapter.addFragment(ProxyListFragmentDZ.newInstance(false),"企业idc线路");
-        adapter.addFragment(CustomProxyListFragment.newInstance(), "自定义");
+//        adapter.addFragment(CustomProxyListFragment.newInstance(), "自定义");
 
         viewPager.setAdapter(adapter);
 

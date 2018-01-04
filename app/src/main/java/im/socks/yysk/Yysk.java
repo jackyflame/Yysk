@@ -19,6 +19,10 @@ public class Yysk {
     public static final String EVENT_CUSTOM_PROXY_REMOVE="custom_proxy_remove";
     public static final String EVENT_CUSTOM_PROXY_UPDATE="custom_proxy_update";
 
+    public static final String EVENT_DZ_PROXY_ADD="dz_proxy_add";
+    public static final String EVENT_DZ_PROXY_REMOVE="dz_proxy_remove";
+    public static final String EVENT_DZ_PROXY_UPDATE="dz_proxy_update";
+
     /**
      * 充值成功
      */

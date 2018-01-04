@@ -17,6 +17,7 @@ import java.util.Map;
 
 import im.socks.yysk.api.YyskApi;
 import im.socks.yysk.api.YyskDZApi;
+import im.socks.yysk.data.DZProxyManager;
 import im.socks.yysk.util.Json;
 import im.socks.yysk.util.XBean;
 import okhttp3.Call;
@@ -35,9 +36,12 @@ public class AppDZ extends App {
 
     protected YyskDZApi apiDZ;
 
+    protected DZProxyManager dzProxyManager;
+
     @Override
     public void init(final Application application) {
         super.init(application);
+        dzProxyManager = new DZProxyManager(this);
         if (isMainProcess) {
             MyLog.d("AppDZ.init on MainProcess");
             apiDZ = new YyskDZApi(this);
@@ -50,6 +54,10 @@ public class AppDZ extends App {
     public YyskDZApi getApi() {
         checkMainProcess();
         return apiDZ;
+    }
+
+    public DZProxyManager getDzProxyManager() {
+        return dzProxyManager;
     }
 
     public void checkUpdateDZ(final Activity activity, final boolean isAutoCheck){

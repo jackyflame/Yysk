@@ -40,12 +40,8 @@ public class ProxyListFragmentDZ extends Fragment {
 
     private final AppDZ app = Yysk.app;
 
-    /**
-     * 表示选择proxy后，为start还是reload vpn
-     */
+    /**表示选择proxy后，为start还是reload vpn*/
     private boolean isReloadVpn = false;
-
-
 
     private EventBus.IListener eventListener = new EventBus.IListener() {
         @Override
@@ -98,7 +94,13 @@ public class ProxyListFragmentDZ extends Fragment {
         });
 
         initRefresyLayout(view);
-        doRefresh();
+
+        List<XBean> list = app.getDzProxyManager().load();
+        if(list != null && list.size() > 0){
+            displayProxyList(list);
+        }else{
+            doRefresh();
+        }
 
         app.getEventBus().on(Yysk.EVENT_ALL, eventListener);
 
@@ -136,27 +138,11 @@ public class ProxyListFragmentDZ extends Fragment {
                 @Override
                 public void onResult(List<XBean> result) {
                     MyLog.d("getDZProxyList=%s", result);
-                    if (result != null && adapter != null) {
-                        adapter.setItems(result);
-                        refreshLayout.finishRefresh(true);
-
-                        errorView.setVisibility(View.GONE);
-                        loginView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-
-
-                        Toast.makeText(getContext(),"为了获得准确的ping时间，建议先断开vpn连接",Toast.LENGTH_LONG).show();
-
-                    } else {
-                        //adapter.setItems();
-                        refreshLayout.finishRefresh(true);
-
-                        errorView.setText("获得代理列表失败");
-                        errorView.setVisibility(View.VISIBLE);
-                        loginView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.GONE);
+                    displayProxyList(result);
+                    //保存最新列表
+                    if (result != null) {
+                        app.getDzProxyManager().save(result);
                     }
-
                 }
             });
         } else {
@@ -166,6 +152,27 @@ public class ProxyListFragmentDZ extends Fragment {
 
         }
 
+    }
+
+    private void displayProxyList(List<XBean> result){
+        if (result != null && adapter != null) {
+            adapter.setItems(result);
+            refreshLayout.finishRefresh(true);
+            errorView.setVisibility(View.GONE);
+            loginView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            Toast.makeText(getContext(),"为了获得准确的ping时间，建议先断开vpn连接",Toast.LENGTH_LONG).show();
+
+        } else {
+            //adapter.setItems();
+            refreshLayout.finishRefresh(true);
+
+            errorView.setText("获得代理列表失败");
+            errorView.setVisibility(View.VISIBLE);
+            loginView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -183,14 +190,28 @@ public class ProxyListFragmentDZ extends Fragment {
         return fragment;
     }
 
-
     private class ProxyAdapter extends RecyclerView.Adapter<ProxyHolder> {
         private List<XBean> items = new ArrayList<>();
         private Context context;
         private Ping ping=null;
 
+        private EventBus.IListener adapterEventListener = new EventBus.IListener() {
+            @Override
+            public void onEvent(String name, Object data) throws Exception {
+                if(Yysk.EVENT_CUSTOM_PROXY_ADD.equals(name)){
+                    onAddProxy((XBean)data);
+                }else if(Yysk.EVENT_CUSTOM_PROXY_REMOVE.equals(name)){
+                    onRemoveProxy((XBean)data);
+                }else if(Yysk.EVENT_CUSTOM_PROXY_UPDATE.equals(name)){
+                    onUpdateProxy((XBean)data);
+                }
+            }
+        };
+
         public ProxyAdapter(Context context) {
             this.context = context;
+            //监听事件
+            app.getEventBus().on(Yysk.EVENT_ALL,adapterEventListener);
         }
 
         @Override
@@ -217,15 +238,19 @@ public class ProxyListFragmentDZ extends Fragment {
             notifyDataSetChanged();
             startPing();
         }
+
         public void destroy(){
             stopPing();
+            app.getEventBus().un(Yysk.EVENT_ALL,adapterEventListener);
         }
+
         private void stopPing(){
             if(ping!=null){
                 ping.close();
                 ping=null;
             }
         }
+
         private void startPing(){
             stopPing();
             if(items.isEmpty()){
@@ -246,6 +271,7 @@ public class ProxyListFragmentDZ extends Fragment {
                 }
             });
         }
+
         private void updatePingTime(String host,String time){
             for(int i=0;i<items.size();i++){
                 XBean item = items.get(i);
@@ -257,6 +283,55 @@ public class ProxyListFragmentDZ extends Fragment {
             }
         }
 
+        public void onRemoveProxy(XBean proxy){
+            int position = indexOf(proxy);
+            if(position>=0){
+                //viewBinderHelper.closeLayout(proxy.getString("id"));
+                items.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+
+        public void onAddProxy(XBean proxy){
+            int index = indexOf(proxy);
+            if(index>=0){
+                items.set(index,proxy);
+                notifyItemChanged(index);
+            }else{
+                items.add(proxy);
+                notifyItemInserted(items.size()-1);
+            }
+        }
+
+        public void onUpdateProxy(XBean proxy){
+            int index = indexOf(proxy);
+            if(index>=0){
+                items.set(index,proxy);
+                notifyItemChanged(index);
+            }else{
+                //如果不存在了的?
+                items.add(proxy);
+                notifyItemInserted(items.size()-1);
+            }
+        }
+
+        public void deleteProxy(XBean proxy){
+            //可以先执行
+            onRemoveProxy(proxy);
+            //获得然后执行删除的操作
+            app.getCustomProxyManager().remove(proxy);
+        }
+
+        private int indexOf(XBean proxy){
+            String id = proxy.getString("id");
+            for(int i=0;i<items.size();i++){
+                XBean item = items.get(i);
+                if(item.isEquals("id",id)){
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 
     private class ProxyHolder extends RecyclerView.ViewHolder {

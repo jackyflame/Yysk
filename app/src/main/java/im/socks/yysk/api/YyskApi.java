@@ -426,6 +426,7 @@ public class YyskApi {
 
     protected <T> T invoke(String msgId, String acKMsgId, XBean params) {
         params.put("DeviceId", deviceId);
+        params.put("deviceid", deviceId);
         //先使用上一次成功的url
         String oldUrl = apiUrl.get();
         String url = null;

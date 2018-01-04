@@ -37,6 +37,8 @@ public class LoginFragmentDZ extends Fragment {
 
     private boolean isLoading = false;
 
+    private XBean loginRst;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,18 +111,18 @@ public class LoginFragmentDZ extends Fragment {
                 dialog.dismiss();
                 if (result != null) {
                     //登录成功后什么都不返回，正常的实现应该返回一个token，然后其他操作都通过这个token来调用api
-                    //
                     if (result.isEquals("retcode", "succ") ||
                             result.isEquals("retcode", "binded")) {
-                        //
-                        app.getSessionManager().onLogin(result.getString("uuid"), phoneNumber,
-                                result.getString("terminal_num"),result.getString("binded_terminal_num"),
-                                result.getString("entername"),password);
+                        //缓存登录信息
+                        loginRst = result;
+                        loginRst.put("account",phoneNumber);
+                        loginRst.put("password",password);
                         //判断是否绑定(未绑定提示是否绑定)
                         if(result.isEquals("retcode", "succ")){
-                            showBindDialog(phoneNumber,result.getString("terminal_num"),
-                                    result.getString("binded_terminal_num"));
+                            showBindDialog(phoneNumber,result);
                         }else{
+                            //保存登录状态信息
+                            saveLoginRst();
                             //当前的fragment不需要保留在stack了，所以为替代
                             if ("show_money".equals(nextAction)) {
                                 getFragmentStack().show(MoneyFragment.newInstance(), null, true);
@@ -158,8 +160,12 @@ public class LoginFragmentDZ extends Fragment {
         return fragment;
     }
 
-    private void showBindDialog(final String account, String terminal_num, String binded_terminal_num){
-        if(StringUtils.isInteger(terminal_num) || StringUtils.isInteger(binded_terminal_num)){
+    private void showBindDialog(final String account, final XBean result){
+        //获取绑定数据
+        String terminal_num = result.getString("terminal_num");
+        String binded_terminal_num = result.getString("binded_terminal_num");
+        //根据绑定数据提示操作
+        if(!StringUtils.isInteger(terminal_num) || !StringUtils.isInteger(binded_terminal_num)){
             new AlertDialog.Builder(getContext())
                     .setTitle("提醒")
                     .setMessage("获取绑定设备数据失败，请稍后再试")
@@ -186,7 +192,7 @@ public class LoginFragmentDZ extends Fragment {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                doBindDevice(account);
+                                doBindDevice(account,result);
                             }
                         })
                         .setNegativeButton("取消",new DialogInterface.OnClickListener() {
@@ -200,7 +206,7 @@ public class LoginFragmentDZ extends Fragment {
         }
     }
 
-    private void doBindDevice(String account){
+    private void doBindDevice(String account, XBean result){
 
         YyskDZApi api = app.getApi();
 
@@ -215,8 +221,12 @@ public class LoginFragmentDZ extends Fragment {
                 MyLog.d("bindDevice=%s",result);
                 dialog.dismiss();
                 if (result != null) {
-                    if (result.isEquals("retcode", "succ")) {
-                        Toast.makeText(getContext(),"绑定成功",Toast.LENGTH_SHORT).show();
+                    if (result.isEquals("errorcode", "succ")) {
+                        //提示成功
+                        Toast.makeText(getContext(),"终端绑定成功",Toast.LENGTH_SHORT).show();
+                        //保存登录状态信息
+                        saveLoginRst();
+                        //返回主页面
                         getFragmentStack().back();
                     }else{
                         showError("绑定失败：" + result.getString("error"));
@@ -226,5 +236,16 @@ public class LoginFragmentDZ extends Fragment {
                 }
             }
         });
+    }
+
+    private void saveLoginRst(){
+        //判断是否登录成功
+        if(loginRst == null || (loginRst.isEquals("retcode", "succ") || loginRst.isEquals("retcode", "binded")) == false){
+            return;
+        }
+        //保存登录状态信息
+        app.getSessionManager().onLogin(loginRst.getString("uuid"), loginRst.getString("account"),
+                loginRst.getString("terminal_num"),loginRst.getString("binded_terminal_num"),
+                loginRst.getString("entername"),loginRst.getString("password"));
     }
 }

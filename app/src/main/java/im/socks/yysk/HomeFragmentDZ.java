@@ -1,6 +1,7 @@
 package im.socks.yysk;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -93,7 +95,7 @@ public class HomeFragmentDZ extends Fragment {
 
         initRefreshLayout(view);
 
-        checkVpnUpdate();
+        checkVpnUpdate(false);
 
         return view;
     }
@@ -174,6 +176,13 @@ public class HomeFragmentDZ extends Fragment {
             @Override
             public void onClick(View v) {
                 app.openUrl("https://fast.com");
+            }
+        });
+
+        proxyLayout.findViewById(R.id.proxyUpdateView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkVpnUpdate(true);
             }
         });
     }
@@ -291,22 +300,46 @@ public class HomeFragmentDZ extends Fragment {
         }
     }
 
-    private void checkVpnUpdate(){
-        Session session = app.getSessionManager().getSession();
+    private void checkVpnUpdate(boolean isClick){
+        final Session session = app.getSessionManager().getSession();
         if (session.isLogin()) {
+            final ProgressDialog dialog = new ProgressDialog(getContext());
+            dialog.setCancelable(false);
+            dialog.setMessage("正在刷新...");
+            dialog.show();
             app.apiDZ.checkVpnUpdateVerson(session.user.phoneNumber, session.user.psw, new YyskApi.ICallback<XBean>() {
                 @Override
                 public void onResult(XBean result) {
                     if(result != null && result.isEquals("retcode", "succ")){
-                        int vpnVersion = result.getInteger("versionid") != null
+                        final int vpnVersion = result.getInteger("versionid") != null
                                 ? result.getInteger("versionid") : -1;
-                        int companyid = result.getInteger("companyid") != null
+                        final int companyid = result.getInteger("companyid") != null
                                 ? result.getInteger("companyid") : -1;
-                        ////更新版本
-                        //app.getSessionManager().onVpnVerCheck(vpnVersion,companyid);
+                        //版本过低则更新
+                        if(session.vpnVersion <= 0 || session.vpnVersion < vpnVersion){
+                            //获取公司代理列表
+                            app.getApi().getDZProxyList(session.user.phoneNumber, new YyskApi.ICallback<List<XBean>>() {
+                                @Override
+                                public void onResult(List<XBean> result) {
+                                    if(result != null && result.size() > 0){
+                                        //缓存列表
+                                        app.getDzProxyManager().save(result);
+                                        //更新版本
+                                        app.getSessionManager().onVpnVerCheck(vpnVersion,companyid);
+                                    }
+                                }
+                            });
+                        }
                     }
+                    dialog.dismiss();
                 }
             });
+        }else if(isClick == true){
+            new AlertDialog.Builder(getContext())
+                    .setTitle("提醒")
+                    .setMessage("请先登录")
+                    .setPositiveButton("确定",null)
+                    .show();
         }
     }
 

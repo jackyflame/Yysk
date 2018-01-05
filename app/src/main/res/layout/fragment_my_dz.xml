@@ -47,7 +47,7 @@
                        android:layout_toRightOf="@+id/iconView"
                        android:paddingTop="10dp"
                        android:paddingBottom="10dp"
-                       android:text="登录/注册"
+                       android:text="登录"
                        android:gravity="center_vertical"
                        android:drawablePadding="10dp"
                        android:drawableLeft="@drawable/account"

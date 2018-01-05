@@ -217,15 +217,18 @@ public class ProxyListFragment extends Fragment {
             notifyDataSetChanged();
             startPing();
         }
+
         public void destroy(){
             stopPing();
         }
+
         private void stopPing(){
             if(ping!=null){
                 ping.close();
                 ping=null;
             }
         }
+
         private void startPing(){
             stopPing();
             if(items.isEmpty()){
@@ -246,6 +249,7 @@ public class ProxyListFragment extends Fragment {
                 }
             });
         }
+
         private void updatePingTime(String host,String time){
             for(int i=0;i<items.size();i++){
                 XBean item = items.get(i);

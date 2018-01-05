@@ -1,5 +1,6 @@
 package im.socks.yysk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -60,6 +61,8 @@ public class HomeFragmentDZ extends Fragment {
      */
     //private final boolean requireLogin = false;
 
+    private Handler mHandler;
+    private static final int HANDLER_GOTO_LOGIN = 100002;
 
     private EventBus.IListener eventListener = new EventBus.IListener() {
         @Override
@@ -83,17 +86,28 @@ public class HomeFragmentDZ extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_dz, container, false);
 
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case HANDLER_GOTO_LOGIN:
+                        loginLayout.callOnClick();
+                        break;
+                }
+            }
+        };
+
         initConnectLayout(view);
 
         initProxyLayout(view);
 
         initMe(view);
 
+        initRefreshLayout(view);
+
         updateVpnStatus();
 
         updateMe(false);
-
-        initRefreshLayout(view);
 
         checkVpnUpdate(false);
 
@@ -247,10 +261,10 @@ public class HomeFragmentDZ extends Fragment {
     private void updateMe(final boolean isManual) {
         Session session = app.getSessionManager().getSession();
         if (!session.isLogin()) {
-
             loginLayout.setVisibility(View.VISIBLE);
             phoneNumberLayout.setVisibility(View.GONE);
             //moneyLayout.setEnabled(true);
+            mHandler.sendEmptyMessageDelayed(HANDLER_GOTO_LOGIN,1000);
         } else {
             phoneNumberView.setText(session.user.phoneNumber);
             loginLayout.setVisibility(View.GONE);
@@ -326,6 +340,8 @@ public class HomeFragmentDZ extends Fragment {
                                         app.getDzProxyManager().save(result);
                                         //更新版本
                                         app.getSessionManager().onVpnVerCheck(vpnVersion,companyid);
+                                        //自动设置默认代理
+                                        setDefaultProxy(result);
                                     }
                                 }
                             });
@@ -467,4 +483,22 @@ public class HomeFragmentDZ extends Fragment {
         return fragment;
     }
 
+    private void setDefaultProxy(List<XBean> result) {
+        //检查列表
+        if(result == null || result.size() == 0){
+            return;
+        }
+        //设置默认选择代理
+        for(XBean item:result){
+            if(item != null && !item.isEmpty("host") && !item.isEmpty("port")){
+                Proxy proxy = new Proxy();
+                proxy.name = item.getString("name");
+                proxy.data = item;
+                proxy.isCustom = false;
+                app.getSessionManager().setProxy(getActivity(), proxy, false);
+                updateProxy(app.getSessionManager().newProxy());
+                break;
+            }
+        }
+    }
 }

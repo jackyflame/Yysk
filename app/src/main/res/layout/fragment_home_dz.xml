@@ -8,6 +8,7 @@
     tools:context="im.socks.yysk.HomeFragment">
 
     <im.socks.yysk.PageBar
+        android:id="@+id/pageBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:pb_title="@string/app_name"></im.socks.yysk.PageBar>

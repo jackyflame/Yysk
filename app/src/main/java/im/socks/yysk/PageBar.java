@@ -13,6 +13,9 @@ import android.widget.TextView;
  */
 
 public class PageBar extends RelativeLayout {
+
+    TextView titleView;
+
     public PageBar(Context context) {
         this(context, null);
         init(context, null, R.attr.pageBarStyle, 0);
@@ -36,7 +39,7 @@ public class PageBar extends RelativeLayout {
 
         LayoutInflater.from(context).inflate(R.layout.view_pagebar, this, true);
 
-        TextView titleView = findViewById(R.id.titleView);
+        titleView = findViewById(R.id.titleView);
         TextView backView = findViewById(R.id.backView);
         TextView actionView = findViewById(R.id.actionView);
 
@@ -63,5 +66,10 @@ public class PageBar extends RelativeLayout {
         a.recycle();
     }
 
+    public void setPbTitle(String title){
+        if(titleView != null){
+            titleView.setText(title);
+        }
+    }
 
 }

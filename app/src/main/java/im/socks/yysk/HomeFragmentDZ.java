@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.TimerTask;
 import im.socks.yysk.api.YyskApi;
 import im.socks.yysk.data.Proxy;
 import im.socks.yysk.data.Session;
+import im.socks.yysk.util.StringUtils;
 import im.socks.yysk.util.XBean;
 import im.socks.yysk.vpn.IYyskService;
 import im.socks.yysk.vpn.IYyskServiceListener;
@@ -51,6 +53,7 @@ public class HomeFragmentDZ extends Fragment {
     private TextView phoneNumberView;
     private View loginLayout;
     private View phoneNumberLayout;
+    private PageBar pageBar;
 
     //private long startTime;
 
@@ -144,6 +147,8 @@ public class HomeFragmentDZ extends Fragment {
         loginLayout = meLayout.findViewById(R.id.loginLayout);
         phoneNumberLayout = meLayout.findViewById(R.id.phoneNumberLayout);
         phoneNumberView = meLayout.findViewById(R.id.phoneNumberView);
+
+        pageBar = view.findViewById(R.id.pageBar);
 
         loginLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,6 +274,9 @@ public class HomeFragmentDZ extends Fragment {
             phoneNumberView.setText(session.user.phoneNumber);
             loginLayout.setVisibility(View.GONE);
             phoneNumberLayout.setVisibility(View.VISIBLE);
+            if(!TextUtils.isEmpty(session.user.entername)){
+                pageBar.setPbTitle(session.user.entername);
+            }
         }
     }
 
@@ -324,7 +332,7 @@ public class HomeFragmentDZ extends Fragment {
             app.apiDZ.checkVpnUpdateVerson(session.user.phoneNumber, session.user.psw, new YyskApi.ICallback<XBean>() {
                 @Override
                 public void onResult(XBean result) {
-                    if(result != null && result.isEquals("retcode", "succ")){
+                    if(result != null && result.isEquals("errorcode", "succ")){
                         final int vpnVersion = result.getInteger("versionid") != null
                                 ? result.getInteger("versionid") : -1;
                         final int companyid = result.getInteger("companyid") != null

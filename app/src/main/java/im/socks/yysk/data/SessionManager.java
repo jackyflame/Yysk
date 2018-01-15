@@ -138,7 +138,7 @@ public class SessionManager {
         app.getEventBus().emit(Yysk.EVENT_VPNCHECK, session, false);
     }
 
-    private void onProxyChanged(Activity activity, Proxy proxy, boolean isReload) {
+    private void onProxyChanged(Activity activity, Proxy proxy, boolean isReload, boolean isAutoOpen) {
         if (!isReload) {
             if (activity == null) {
                 throw new IllegalArgumentException("如果不是reload，必须提供activity参数");
@@ -149,7 +149,7 @@ public class SessionManager {
             app.getVpn().stop();
         } else if (isReload) {
             app.getVpn().reload();
-        } else {
+        } else if(isAutoOpen == true){
             app.getVpn().start(activity);
         }
     }
@@ -160,9 +160,18 @@ public class SessionManager {
      * @param isReload true表示reload vpn，也就是如果当前为停止的，还是停止，当前为开始，就使用新的代理，false表示如果proxy不为null，就开启vpn
      */
     public void setProxy(Activity activity, Proxy proxy, boolean isReload) {
+        setProxy(activity,proxy,isReload,true);
+    }
+
+    /**
+     * @param activity 这个activity需要重写onActivityResult且调用YyskVpn.onActivityResult()，处理授权结果
+     * @param proxy
+     * @param isReload true表示reload vpn，也就是如果当前为停止的，还是停止，当前为开始，就使用新的代理，false表示如果proxy不为null，就开启vpn
+     */
+    public void setProxy(Activity activity, Proxy proxy, boolean isReload, boolean isAutoOpen) {
         this.proxy = proxy;
         saveProxy(proxy);
-        onProxyChanged(activity, proxy, isReload);
+        onProxyChanged(activity, proxy, isReload, isAutoOpen);
     }
 
     private Session loadSession() {

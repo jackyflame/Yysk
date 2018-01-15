@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,6 +67,9 @@ public class HomeFragmentDZ extends Fragment {
 
     private Handler mHandler;
     private static final int HANDLER_GOTO_LOGIN = 100002;
+
+    private Ping ping = null;
+    private float pingTime = -1;
 
     private EventBus.IListener eventListener = new EventBus.IListener() {
         @Override
@@ -244,7 +248,7 @@ public class HomeFragmentDZ extends Fragment {
             timer.cancel();
             timer = null;
         }
-
+        stopPing();
         app.getVpn().unbind(serviceConnection);
         app.getEventBus().un(Yysk.EVENT_ALL, eventListener);
 
@@ -255,9 +259,11 @@ public class HomeFragmentDZ extends Fragment {
     }
 
     private void updateProxy(Proxy proxy) {
-        if (proxy != null) {
+        if (proxy != null && proxy.data != null) {
             //设置text
             proxyNameView.setText(proxy.name);
+            String host = proxy.data.getString("host");
+            startPing(host);
         } else {
             proxyNameView.setText("请选择代理");
         }
@@ -353,7 +359,13 @@ public class HomeFragmentDZ extends Fragment {
                                     }
                                 }
                             });
+                            //提示线路更新
+                            showVPNAlert("线路更新："+StringUtils.getNowTimeStr());
+                        }else{
+                            showVPNAlert("线路无更新");
                         }
+                    }else{
+                        showVPNAlert("线路无更新");
                     }
                     dialog.dismiss();
                 }
@@ -381,6 +393,12 @@ public class HomeFragmentDZ extends Fragment {
             //或者必须先登录
             //如果选择了代理
             if (app.getSessionManager().getProxy()!=null) {
+                if(pingTime <= 0){
+                    showVPNAlert("线路失效不可用，请联系客服");
+                    return;
+                }else{
+                    //showVPNAlert("线路可用");
+                }
                 app.getVpn().start(getActivity());
             } else {
                 //如果还没有proxy，就需要先选择
@@ -503,10 +521,43 @@ public class HomeFragmentDZ extends Fragment {
                 proxy.name = item.getString("name");
                 proxy.data = item;
                 proxy.isCustom = false;
-                app.getSessionManager().setProxy(getActivity(), proxy, false);
+                app.getSessionManager().setProxy(getActivity(), proxy, false, false);
                 updateProxy(app.getSessionManager().newProxy());
                 break;
             }
         }
+    }
+
+    /*---------------------------------------------------------------------*/
+    private void stopPing(){
+        if(ping!=null){
+            ping.close();
+            ping=null;
+        }
+        MyLog.d("-------------->>>>stopPing");
+    }
+
+    private void startPing(String host){
+        stopPing();
+        if(TextUtils.isEmpty(host)){
+            return;
+        }
+        MyLog.d("-------------->>>>startPing：" + host);
+        List<String> hosts = new ArrayList<>();
+        hosts.add(host);
+        ping = new Ping();
+        ping.setCount(5);
+        ping.setTimeout(30);
+        ping.ping(hosts, new Ping.IPingListener() {
+            @Override
+            public void onTime(String host, String time) {
+                MyLog.d("----->>Ping["+host+"]：" + time + "ms");
+                if(!TextUtils.isEmpty(time) && StringUtils.strIsFloat(time.trim())){
+                    pingTime = Float.valueOf(time.trim());
+                }else{
+                    pingTime = -1;
+                }
+            }
+        });
     }
 }

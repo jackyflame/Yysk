@@ -167,7 +167,6 @@ public class AppDZ extends App {
                 //实现httpManager接口的对象
                 .setHttpManager(httpManager)
                 .build()
-
                 .checkNewApp(cb);
     }
 

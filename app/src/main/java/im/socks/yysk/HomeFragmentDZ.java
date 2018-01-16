@@ -76,6 +76,7 @@ public class HomeFragmentDZ extends Fragment {
         public void onEvent(String name, Object data) throws Exception {
             if (Yysk.EVENT_LOGIN.equals(name)) {
                 updateMe(false);
+                checkVpnUpdate(false);
             } else if (Yysk.EVENT_LOGOUT.equals(name)) {
                 updateMe(false);
             } else if (Yysk.EVENT_PROXY_CHANGED.equals(name)) {

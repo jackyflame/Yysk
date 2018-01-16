@@ -2,10 +2,16 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
+//        release {
+//            keyAlias 'yysk'
+//            keyPassword '123456'
+//            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
+//            storePassword '123456'
+//        }
         release {
-            keyAlias 'yysk'
+            keyAlias 'yysk_dz'
             keyPassword '123456'
-            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
+            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/dz_key.jks')
             storePassword '123456'
         }
 //        debug {
@@ -18,7 +24,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "im.socks.yysk"
+        applicationId "im.socks.yyskdz"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 6

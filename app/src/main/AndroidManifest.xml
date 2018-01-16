@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="im.socks.yysk"
-
     >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,7 +22,7 @@
     <!-- end ping++ -->
 
     <application
-        android:name=".YyskApplication"
+        android:name="im.socks.yysk.YyskApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -31,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="im.socks.yysk.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -42,7 +41,7 @@
 
 
         <service
-            android:name=".vpn.YyskVpnService"
+            android:name="im.socks.yysk.vpn.YyskVpnService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -82,7 +81,7 @@
 
         <!-- 自定义的jpush receiver，手动处理接收到的通知和消息，因为默认的处理不符合要求 -->
         <receiver
-            android:name=".JPushReceiver"
+            android:name="im.socks.yysk.JPushReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />

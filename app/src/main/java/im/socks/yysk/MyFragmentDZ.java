@@ -131,7 +131,7 @@ public class MyFragmentDZ extends Fragment implements View.OnClickListener {
             //or show_money
             getFragmentStack().show(LoginFragmentDZ.newInstance(null), "login", false);
         } else if (id == R.id.phoneNumberView) {
-            getFragmentStack().show(MoneyFragment.newInstance(), null, false);
+            //getFragmentStack().show(MoneyFragment.newInstance(), null, false);
         } else if (id == R.id.userIdView) {
             //
         } else if (id == R.id.siteView) {

@@ -6,12 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-
-import cn.jpush.android.api.JPushInterface;
-import im.socks.yysk.util.Json;
-import im.socks.yysk.util.XBean;
 
 /**
  * Created by cole on 2017/11/20.
@@ -23,36 +18,36 @@ public class JPushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //参考：https://docs.jiguang.cn/jpush/client/Android/android_api/
         String action = intent.getAction();
-        if(JPushInterface.ACTION_MESSAGE_RECEIVED.equals(action)){
-            //自定义消息
-        }else if(JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(action)){
-            //通知
-            showNotification(context,intent);
-        }else{
-
-        }
+//        if(JPushInterface.ACTION_MESSAGE_RECEIVED.equals(action)){
+//            //自定义消息
+//        }else if(JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(action)){
+//            //通知
+//            showNotification(context,intent);
+//        }else{
+//
+//        }
     }
 
     private void showNotification(Context context,Intent intent){
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //manager.cancel(ID);
 
-        Bundle bundle = intent.getExtras();
-        String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
-        String content = bundle.getString(JPushInterface.EXTRA_ALERT);
-        //自定义的key:value
-        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        if(extras!=null){
-            XBean bean = Json.parse(extras,XBean.class);
-        }
-
-        int notificationId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-        if(content==null||content.isEmpty()){
-            manager.cancel(notificationId);
-        }else{
-            Notification n = build(context,title,content);
-            manager.notify(notificationId,n);
-        }
+//        Bundle bundle = intent.getExtras();
+//        String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+//        String content = bundle.getString(JPushInterface.EXTRA_ALERT);
+//        //自定义的key:value
+//        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+//        if(extras!=null){
+//            XBean bean = Json.parse(extras,XBean.class);
+//        }
+//
+//        int notificationId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+//        if(content==null||content.isEmpty()){
+//            manager.cancel(notificationId);
+//        }else{
+//            Notification n = build(context,title,content);
+//            manager.notify(notificationId,n);
+//        }
     }
 
     private Notification build(Context context,String title,String content) {

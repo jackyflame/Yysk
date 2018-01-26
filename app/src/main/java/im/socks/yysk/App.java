@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import cn.jpush.android.api.JPushInterface;
 import im.socks.yysk.api.YyskApi;
 import im.socks.yysk.data.CustomProxyManager;
 import im.socks.yysk.data.SessionManager;
@@ -153,17 +152,15 @@ public class App {
 
 
     protected void initJPush(){
-        //jpush ，会启动一个service，在独立的进程
-        JPushInterface.setDebugMode(DEBUG);
-
-        //下面这2个方法仅仅是保存builder的toString()，而不是保存builder对象，所以
-        //没有什么用处
-        //JPushInterface.setDefaultPushNotificationBuilder(builder);
-        //JPushInterface.setPushNotificationBuilder(1,builder);
-
-        JPushInterface.init(context);
-
-
+//        //jpush ，会启动一个service，在独立的进程
+//        JPushInterface.setDebugMode(DEBUG);
+//
+//        //下面这2个方法仅仅是保存builder的toString()，而不是保存builder对象，所以
+//        //没有什么用处
+//        //JPushInterface.setDefaultPushNotificationBuilder(builder);
+//        //JPushInterface.setPushNotificationBuilder(1,builder);
+//
+//        JPushInterface.init(context);
 
     }
 

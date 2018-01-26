@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="im.socks.yysk"
-    >
+    package="im.socks.yysk">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,7 +21,7 @@
     <!-- end ping++ -->
 
     <application
-        android:name="im.socks.yysk.YyskApplication"
+        android:name=".YyskApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="im.socks.yysk.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -41,7 +40,7 @@
 
 
         <service
-            android:name="im.socks.yysk.vpn.YyskVpnService"
+            android:name=".vpn.YyskVpnService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -57,43 +56,42 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 支付宝 -->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
-        <activity
-            android:name="com.alipay.sdk.auth.AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+        <!--&lt;!&ndash; 支付宝 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.alipay.sdk.app.H5PayActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|navigation|screenSize"-->
+            <!--android:exported="false"-->
+            <!--android:screenOrientation="behind" >-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name="com.alipay.sdk.auth.AuthActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|navigation|screenSize"-->
+            <!--android:exported="false"-->
+            <!--android:screenOrientation="behind" >-->
+        <!--</activity>-->
 
-        <!-- 微信支付 -->
-        <activity-alias
-            android:name="im.socks.yysk.wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:targetActivity="com.pingplusplus.android.PaymentActivity" />
+        <!--&lt;!&ndash; 微信支付 &ndash;&gt;-->
+        <!--<activity-alias-->
+            <!--android:name=".wxapi.WXPayEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:targetActivity="com.pingplusplus.android.PaymentActivity" />-->
 
         <!-- end ping++ -->
 
         <!-- 自定义的jpush receiver，手动处理接收到的通知和消息，因为默认的处理不符合要求 -->
-        <receiver
-            android:name="im.socks.yysk.JPushReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-                <category android:name="im.socks.yysk" />
-            </intent-filter>
-        </receiver>
-
+        <!--<receiver-->
+            <!--android:name=".JPushReceiver"-->
+            <!--android:enabled="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="cn.jpush.android.intent.REGISTRATION" />-->
+                <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />-->
+                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />-->
+                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />-->
+                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />-->
+                <!--<action android:name="cn.jpush.android.intent.CONNECTION" />-->
+                <!--<category android:name="im.socks.yyskdz" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!-- jpush end -->
 
         <!-- begin zxing -->

@@ -8,7 +8,7 @@ android {
 //            storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/key.jks')
 //            storePassword '123456'
 //        }
-        release {
+        release_dz {
             keyAlias 'yysk_dz'
             keyPassword '123456'
             storeFile file('D:\\UserData\\AndroidStudioProjects\\Yysk/dz_key.jks')
@@ -24,7 +24,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "im.socks.yyskdz"
+        applicationId "im.socks.yysk"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 6
@@ -48,7 +48,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release_dz
         }
         debug {
             jniDebuggable true
@@ -96,8 +96,8 @@ dependencies {
     compile 'com.pingxx:pingpp-alipay:2.1.14'
     // 使用支付宝时添加
     //jpush
-    compile 'cn.jiguang.sdk:jpush:3.1.0'
-    compile 'cn.jiguang.sdk:jcore:1.1.8'
+    //compile 'cn.jiguang.sdk:jpush:3.1.0'
+    //compile 'cn.jiguang.sdk:jcore:1.1.8'
     //update
     compile 'com.qianwen:update-app:3.3.8'
     compile 'com.qianwen:okhttp-utils:3.8.0'

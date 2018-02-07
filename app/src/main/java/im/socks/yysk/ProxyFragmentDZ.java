@@ -35,6 +35,14 @@ public class ProxyFragmentDZ extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        PageBar pageBar =view.findViewById(R.id.pageBar);
+        pageBar.setBackListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentStack().back();
+            }
+        });
+
         return view;
     }
 
@@ -72,5 +80,9 @@ public class ProxyFragmentDZ extends Fragment {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    private FragmentStack getFragmentStack() {
+        return ((MainActivity) getActivity()).getFragmentStack();
     }
 }

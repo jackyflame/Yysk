@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class PageBar extends RelativeLayout {
 
     TextView titleView;
+    TextView backView;
 
     public PageBar(Context context) {
         this(context, null);
@@ -40,7 +41,7 @@ public class PageBar extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.view_pagebar, this, true);
 
         titleView = findViewById(R.id.titleView);
-        TextView backView = findViewById(R.id.backView);
+        backView = findViewById(R.id.backView);
         TextView actionView = findViewById(R.id.actionView);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PageBar, defStyleAttr, defStyleRes);
@@ -52,16 +53,21 @@ public class PageBar extends RelativeLayout {
         setBackgroundColor(a.getColor(R.styleable.PageBar_pb_backgroundColor, 0x000000));
 
         int textSize = a.getDimensionPixelSize(R.styleable.PageBar_pb_textSize, 24);//24sp?
+        int backTextSize = a.getDimensionPixelSize(R.styleable.PageBar_pb_backTextSize, 22);//24sp?
         int textColor = a.getColor(R.styleable.PageBar_pb_textColor, 0xffffff);//
 
 
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-        backView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        backView.setTextSize(TypedValue.COMPLEX_UNIT_PX, backTextSize);
         actionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
         titleView.setTextColor(textColor);
         backView.setTextColor(textColor);
         actionView.setTextColor(textColor);
+
+        if(a.getBoolean(R.styleable.PageBar_pb_back,false)){
+            backView.setVisibility(VISIBLE);
+        }
 
         a.recycle();
     }
@@ -72,4 +78,9 @@ public class PageBar extends RelativeLayout {
         }
     }
 
+    public void setBackListener(OnClickListener onClickListener){
+        if(backView != null){
+            backView.setOnClickListener(onClickListener);
+        }
+    }
 }

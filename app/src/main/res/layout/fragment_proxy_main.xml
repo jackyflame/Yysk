@@ -5,9 +5,11 @@
     android:layout_height="match_parent">
 
     <im.socks.yysk.PageBar
+        android:id="@+id/pageBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:pb_title="代理"
+        app:pb_back="true"
         ></im.socks.yysk.PageBar>
 
     <android.support.design.widget.TabLayout

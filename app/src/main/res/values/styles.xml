@@ -26,6 +26,7 @@
     <style name="PageBarStyle">
         <item name="pb_backgroundColor">?attr/colorPrimary</item>
         <item name="pb_textSize">20sp</item>
+        <item name="pb_backTextSize">16sp</item>
         <item name="pb_textColor">#ffffff</item>
     </style>
 

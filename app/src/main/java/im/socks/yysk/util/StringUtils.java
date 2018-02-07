@@ -52,4 +52,9 @@ public class StringUtils {
         return format.format(new Date(time));
     }
 
+    public static String getTimeStr(long time){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date(time));
+    }
+
 }

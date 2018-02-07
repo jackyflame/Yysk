@@ -20,6 +20,8 @@ public class Session implements Json.IJsonable<XBean> {
     public int vpnVersion;
     /**vpn列表所属公司ID*/
     public int companyid;
+    /**vpn列表最后更新时间*/
+    public long vpnUpdateTime;
 
     public Session() {
     }
@@ -36,7 +38,7 @@ public class Session implements Json.IJsonable<XBean> {
     public XBean toJson() {
         //应该存储token，而不是is_login的
         return new XBean("user", user.toJson(), "is_login", isLogin,
-                "vpnVersion", vpnVersion, "companyid", companyid);
+                "vpnVersion", vpnVersion, "companyid", companyid, "vpnUpdateTime", vpnUpdateTime);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class Session implements Json.IJsonable<XBean> {
         isLogin = bean.getBoolean("is_login", false);
         vpnVersion = bean.getInteger("vpnVersion", -1);
         companyid = bean.getInteger("companyid", -1);
+        vpnUpdateTime = bean.getLong("vpnUpdateTime", -1l);
 
         return true;
     }

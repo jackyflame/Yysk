@@ -78,6 +78,10 @@ public class YyskDZApi extends YyskApi {
         invoke("10039","20039",new XBean("account",account,"password",psw),cb);
     }
 
+    public void checkVpnEndTime(String account,ICallback<XBean> cb) {
+        invoke("10044","20044",new XBean("account",account),cb);
+    }
+
     /* 获取企业用户专用节点
     * strPhoneNum: 登录手机号
     * 返回值: 成功返回[{"authscheme":"","host":"","name":"","password":"","port":"","price":,"ssrObfs":"n","ssrProtocol":"","user":""}],失败返回null

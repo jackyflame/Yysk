@@ -45,9 +45,12 @@ public class HomeFragmentDZ extends Fragment {
     //proxy part
     private View proxyView;
     private TextView proxyNameView;
+    private TextView txv_vpn_update;
+    private TextView txv_endtime;
     private Switch bypassChinaView;
     private View editAclView;
     private View testSpeedView;
+    private boolean isTimeEnd = false;
 
 
     //me part
@@ -67,6 +70,7 @@ public class HomeFragmentDZ extends Fragment {
 
     private Handler mHandler;
     private static final int HANDLER_GOTO_LOGIN = 100002;
+    private static final int HANDLER_UPDATE_ENDTIME = 100003;
 
     private Ping ping = null;
     private float pingTime = -1;
@@ -142,9 +146,14 @@ public class HomeFragmentDZ extends Fragment {
         vpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleVpn();
+                if(isTimeEnd == true){
+                    showVPNAlert("加速时间已用完，请联系管理员");
+                }else{
+                    toggleVpn();
+                }
             }
         });
+        txv_endtime = view.findViewById(R.id.txv_endtime);
     }
 
     private void initMe(View view) {
@@ -209,6 +218,8 @@ public class HomeFragmentDZ extends Fragment {
                 checkVpnUpdate(true);
             }
         });
+
+        txv_vpn_update = proxyLayout.findViewById(R.id.txv_vpn_update);
     }
 
     @Override
@@ -362,8 +373,12 @@ public class HomeFragmentDZ extends Fragment {
                             });
                             //提示线路更新
                             showVPNAlert("线路更新："+StringUtils.getNowTimeStr());
+                            txv_vpn_update.setText("更新线路("+StringUtils.getNowTimeStr()+")");
                         }else{
                             showVPNAlert("线路无更新");
+                            if(session.vpnUpdateTime > 0){
+                                txv_vpn_update.setText("更新线路("+StringUtils.getTimeStr(session.vpnUpdateTime)+")");
+                            }
                         }
                     }else{
                         showVPNAlert("线路无更新");
@@ -371,6 +386,8 @@ public class HomeFragmentDZ extends Fragment {
                     dialog.dismiss();
                 }
             });
+            //检查过期时间
+            checkEndTime(session.user.phoneNumber);
         }else if(isClick == true){
             new AlertDialog.Builder(getContext())
                     .setTitle("提醒")
@@ -378,6 +395,30 @@ public class HomeFragmentDZ extends Fragment {
                     .setPositiveButton("确定",null)
                     .show();
         }
+    }
+
+    private void checkEndTime(String account){
+        app.apiDZ.checkVpnEndTime(account,new YyskApi.ICallback<XBean>(){
+            @Override
+            public void onResult(XBean result) {
+                if(result != null && result.hasKeys("enable")){
+                    //服务状态0：停用，1：启用
+                    int enable = result.getInteger("enable") != null
+                            ? result.getInteger("enable") : -1;
+                    //服务到期时间，10位数字时间，精确到秒
+                    long expire_date = result.getLong("expire_date") != null
+                            ? result.getLong("expire_date") : -1;
+                    //刷新到期时间
+                    if(enable != 1){
+                        isTimeEnd = true;
+                    }else{
+                        isTimeEnd = false;
+                    }
+                    txv_endtime.setVisibility(View.VISIBLE);
+                    txv_endtime.setText("到期时间："+StringUtils.getTimeStr(expire_date*1000));
+                }
+            }
+        });
     }
 
     private void toggleVpn() {

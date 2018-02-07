@@ -132,6 +132,7 @@ public class SessionManager {
         }
         session.vpnVersion = vpnVersion;
         session.companyid = companyId;
+        session.vpnUpdateTime = System.currentTimeMillis();
 
         saveSession(session);
 
